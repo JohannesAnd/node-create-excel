@@ -5,13 +5,11 @@ const Worksheet = require('./src/worksheet');
 
 const excel = new Workbook();
 
-const sheet1 = new Worksheet("Ark 1");
+const sheet1 = excel.createNewWorksheet("ark1");
 
 sheet1.insertIntoCell("B4", 42, "number");
 sheet1.insertIntoCell("B5", "Heo", "string");
 sheet1.insertIntoCell("B6", "Heo", "string");
 sheet1.insertIntoCell("C5", "pa", "string");
-
-excel.addWorksheets([sheet1]);
 
 excel.generateFile(__dirname + '/build/example.xlsx');

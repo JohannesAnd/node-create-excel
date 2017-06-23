@@ -3,6 +3,8 @@ const path = require('path');
 const archiver = require('archiver');
 const SortedMap = require('collections/sorted-map');
 
+const Worksheet = require('./worksheet');
+
 const sharedStringsGenerator = require("./generators/sharedStrings");
 const contentTypesGenerator = require("./generators/contentTypes");
 const relationshipsGenerator = require("./generators/workbookRels");
@@ -36,7 +38,9 @@ module.exports = class Workbook {
     return id;
   }
 
-  addWorksheet(worksheet) {
+  createNewWorksheet(name) {
+    const worksheet = new Worksheet(name);
+
     const path = `worksheets/sheet${this.worksheets.length + 1}.xml`;
     const rel = this._generateRelationship('worksheet', path);
 
@@ -47,7 +51,7 @@ module.exports = class Workbook {
     this.worksheets.push(worksheet);
     this.partList.push(new Part('worksheet', path));
 
-    return rel;
+    return worksheet;
   }
 
   addWorksheets(worksheets) {

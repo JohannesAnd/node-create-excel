@@ -4,7 +4,8 @@ module.exports = {
     relationships: "http://schemas.openxmlformats.org/package/2006/relationships",
     worksheet: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet",
     styles: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles",
-    theme: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme"
+    theme: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme",
+    sharedStrings: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings"
   },
   sheet: {
     relationships: "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
@@ -13,7 +14,7 @@ module.exports = {
     ac: "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac"
   },
   parts: {
-    xml: "application/xml",
+    strings: "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml",
     rels: "application/vnd.openxmlformats-package.relationships+xml",
     xml: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
     worksheet: "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml",

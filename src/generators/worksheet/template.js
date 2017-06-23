@@ -1,7 +1,7 @@
-const links = require('./../../utils/links');
-const writeXML = require('./../../utils/writeXML');
+const links = require('./../../../utils/links');
+const writeXML = require('./../../../utils/writeXML');
 
-module.exports = (sheetData = []) => {
+module.exports = sheetData => {
   const data = [
     {
       tag: "worksheet",

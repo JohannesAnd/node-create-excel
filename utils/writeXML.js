@@ -29,6 +29,12 @@ const generateClosingTag = (tag, level) => {
 
 const createChildren = (data, level) => {
   if (!level) level = 0;
+  if (data.content) {
+    const opening = generateOpeningTag(data.tag, data.props || {}, level);
+    const middle = space.repeat(level + 1) + data.content + "\n";
+    const closing = generateClosingTag(data.tag, level)
+    return opening + middle + closing;
+  }
   if (data.children && data.children.length > 0) {
     const opening = generateOpeningTag(data.tag, data.props || {}, level);
     const middle = data.children.map(child => createChildren(child, level + 1)).join("");

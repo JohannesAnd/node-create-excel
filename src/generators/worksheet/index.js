@@ -7,7 +7,7 @@ module.exports = (worksheet, addSharedString) => {
   const sheetData = Object.keys(cellData).sort().map(rowKey => {
     const row = cellData[rowKey];
 
-    const columns = Object.keys(row).sort().map(columnKey => {
+    const column = Object.keys(row).sort().map(columnKey => {
       const value = row[columnKey];
       switch (value.type) {
         case 'number':
@@ -52,7 +52,7 @@ module.exports = (worksheet, addSharedString) => {
         r: rowKey,
         "x14ac:dyDescent": "0.25"
       },
-      children: columns
+      children: column
     }
   });
 

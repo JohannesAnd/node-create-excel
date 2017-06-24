@@ -13,7 +13,7 @@ function letterToNumber(letters) {
   return result;
 }
 
-module.exports.cellToYX = cell => {
+module.exports.cellToColRow = cell => {
   let i = 0;
   let cond = true;
   while (cond) {
@@ -23,7 +23,7 @@ module.exports.cellToYX = cell => {
     }
     i++;
   }
-  const y = letterToNumber(cell.substring(0,i));
-  const x = Number(cell.substring(i));
-  return { y, x };
+  const col = letterToNumber(cell.substring(0,i));
+  const row = Number(cell.substring(i));
+  return { row, col };
 }

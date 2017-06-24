@@ -1,3 +1,3 @@
 module.exports.writeXML = require('./writeXML');
-module.exports.cellToYX = require('./cellConversions').cellToYX;
+module.exports.cellToColRow = require('./cellConversions').cellToColRow;
 module.exports.YXToCell = require('./cellConversions').YXToCell;

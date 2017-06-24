@@ -1,4 +1,4 @@
-const { cellToYX } = require('./../utils');
+const { cellToColRow } = require('./../utils');
 
 module.exports = class Worksheet {
   constructor(name) {
@@ -19,18 +19,18 @@ module.exports = class Worksheet {
   }
 
   insertIntoCell(cell, data, type) {
-    const { y, x } = cellToYX(cell);
+    const { col, row } = cellToColRow(cell);
 
-    if (y in this.data) {
-      if (x in this.data[y]) {
+    if (row in this.data) {
+      if (col in this.data[row]) {
         console.warn(`Overwriting data in cell ${cell} in sheet "${this.name}"`);
-        this.data[y][x] = {cell, data, type};
+        this.data[row][col] = {cell, data, type};
       } else {
-        this.data[y][x] = {cell, data, type};
+        this.data[row][col] = {cell, data, type};
       }
     } else {
-      this.data[y] = {};
-      this.data[y][x] = {cell, data, type};
+      this.data[row] = {};
+      this.data[row][col] = {cell, data, type};
     }
   }
 

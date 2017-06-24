@@ -20,6 +20,7 @@ const data = [
 
 sheet1.insertIntoCell("B2", "My people:", "string");
 sheet1.insertTable("B4", headers, data);
+sheet1.insertTable("B12", headers, data);
 
 
 excel.generateFile(__dirname + '/build/example.xlsx');

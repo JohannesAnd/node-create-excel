@@ -4,10 +4,10 @@ module.exports = (worksheet, addSharedString) => {
 
   const cellData = worksheet.getData();
 
-  const sheetData = Object.keys(cellData).sort().map(rowKey => {
+  const sheetData = Object.keys(cellData).sort((a,b) => a - b).map(rowKey => {
     const row = cellData[rowKey];
 
-    const column = Object.keys(row).sort().map(columnKey => {
+    const column = Object.keys(row).sort((a,b) => a - b).map(columnKey => {
       const value = row[columnKey];
       switch (value.type) {
         case 'number':

@@ -50,12 +50,7 @@ module.exports = (worksheet, addSharedString) => {
       tag: "row",
       props: {
         r: rowKey,
-        customFormat: "false",
-        ht: "12.8",
-        hidden: "false",
-        customHeight: "true",
-        outlineLevel: "0",
-        collapsed: "false"
+        "x14ac:dyDescent": "0.25"
       },
       children: columns
     }

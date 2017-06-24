@@ -14,32 +14,6 @@ module.exports = sheetData => {
       },
       children: [
         {
-          tag: "dimension",
-          props: {
-            ref: "A1"
-          }
-        },
-        {
-          tag: "sheetViews",
-          children: [
-            {
-              tag: "sheetView",
-              props: {
-                tabSelected: "1",
-                workbookViewId: "0"
-              }
-            }
-          ]
-        },
-        {
-          tag: "sheetFormatPr",
-          props: {
-            baseColWidth: "10",
-            defaultRowHeight: "15",
-            "x14ac:dyDescent": "0.25"
-          }
-        },
-        {
           tag: "sheetData",
           children: sheetData
         },

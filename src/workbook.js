@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
-const SortedMap = require('collections/sorted-map');
 
 const Worksheet = require('./worksheet');
 
@@ -26,7 +25,7 @@ module.exports = class Workbook {
       new Part("xml", "workbook.xml"),
       new Part("strings", "sharedStrings.xml")
     ];
-    this.sharedStrings = new SortedMap();
+    this.sharedStrings = {};
   }
 
   _generateRelationship(type, path) {
@@ -67,12 +66,13 @@ module.exports = class Workbook {
   }
 
   addSharedString(string) {
-    let i = this.sharedStrings.get(string);
-
-    if (!i) {
-      i = this.sharedStrings.length;
-      this.sharedStrings.add(string, i);
+    if (string in this.sharedStrings) {
+      return this.sharedStrings[string];
     }
+    const i = Object.keys(this.sharedStrings).length;
+
+    this.sharedStrings[string] = i;
+
     return i;
   }
 

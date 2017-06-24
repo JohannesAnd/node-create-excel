@@ -1,4 +1,4 @@
-const { cellToColRow } = require('./../utils');
+const { cellToColRow, colRowToCell } = require('./../utils');
 
 module.exports = class Worksheet {
   constructor(name) {
@@ -31,6 +31,19 @@ module.exports = class Worksheet {
     } else {
       this.data[row] = {};
       this.data[row][col] = {cell, data, type};
+    }
+  }
+
+  insertTable(startCell, headers, data) {
+    const { col:startCol, row:startRow } = cellToColRow(startCell);
+
+    for (let col = 0; col < headers.length; col++) {
+      this.insertIntoCell(colRowToCell(col + startCol, startRow), headers[col].data, headers[col].headerType);
+    }
+    for (let row = 0; row < data.length; row++) {
+      for (let col = 0; col< headers.length; col++) {
+        this.insertIntoCell(colRowToCell(col + startCol, row + startRow + 1), data[row][col], headers[col].dataType);
+      }
     }
   }
 

@@ -4,10 +4,22 @@ const excel = new Workbook();
 
 const sheet1 = excel.createNewWorksheet("ark1");
 
-sheet1.insertIntoCell("A1", 42,    "number");
-sheet1.insertIntoCell("B4", 42,    "number");
-sheet1.insertIntoCell("A3", 42,    "number");
-sheet1.insertIntoCell("A4", "ehi", "string");
+const headers = [
+  {data: "Name", headerType: "string", dataType: "string"},
+  {data: "Age", headerType: "string", dataType: "number"},
+  {data: "Gender", headerType: "string", dataType: "string"},
+];
+
+const data = [
+  ["Gunnar", 32, "Male"],
+  ["Åge", 2, "Male"],
+  ["Lise", 32, "Female"],
+  ["Petter", 74, "Male"],
+  ["Arne", 23, "Male"],
+];
+
+sheet1.insertIntoCell("B2", "My people:", "string");
+sheet1.insertTable("B4", headers, data);
 
 
 excel.generateFile(__dirname + '/build/example.xlsx');

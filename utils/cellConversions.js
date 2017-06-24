@@ -13,6 +13,23 @@ function letterToNumber(letters) {
   return result;
 }
 
+function numberToLetter(col) {
+  if (col <= 0)
+		throw "col must be more than 0";
+	var array = new Array();
+	while (col > 0) {
+		var remainder = col % 26;
+		col /= 26;
+		col = Math.floor(col);
+		if (remainder === 0) {
+			remainder = 26;
+			col--;
+		}
+		array.push(64 + remainder);
+	}
+	return String.fromCharCode.apply(null, array.reverse());
+}
+
 module.exports.cellToColRow = cell => {
   let i = 0;
   let cond = true;
@@ -26,4 +43,10 @@ module.exports.cellToColRow = cell => {
   const col = letterToNumber(cell.substring(0,i));
   const row = Number(cell.substring(i));
   return { row, col };
+}
+
+module.exports.colRowToCell = (col, row) => {
+  const colLetter = numberToLetter(col);
+
+  return `${colLetter}${row}`;
 }

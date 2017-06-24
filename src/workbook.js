@@ -19,13 +19,20 @@ module.exports = class Workbook {
     this.styles = [];
     this.themes = [];
     this.relationships = [
-      new Relationship("rId1", "sharedStrings", "sharedStrings.xml")
+      new Relationship("rId1", "sharedStrings", "sharedStrings.xml"),
+      new Relationship("rId2", "styles", "styles.xml"),
+      new Relationship("rId3", "theme", "theme/theme1.xml"),
     ];
     this.partList = [
-      new Part("xml", "workbook.xml"),
-      new Part("strings", "sharedStrings.xml")
+      new Part("xml", "/xl/workbook.xml"),
+      new Part("strings", "/xl/sharedStrings.xml"),
+      new Part("styles", "/xl/styles.xml"),
+      new Part("theme", "/xl/theme/theme1.xml"),
+      new Part("app", "/docProps/app.xml"),
+      new Part("core", "/docProps/core.xml"),
     ];
     this.sharedStrings = {};
+    this.sharedStringsCount = 0;
   }
 
   _generateRelationship(type, path) {
@@ -48,7 +55,7 @@ module.exports = class Workbook {
     worksheet.setRelationshipId(rel);
 
     this.worksheets.push(worksheet);
-    this.partList.push(new Part('worksheet', path));
+    this.partList.push(new Part('worksheet', "/xl/" + path));
 
     return worksheet;
   }
@@ -66,6 +73,8 @@ module.exports = class Workbook {
   }
 
   addSharedString(string) {
+    this.sharedStringsCount ++;
+
     if (string in this.sharedStrings) {
       return this.sharedStrings[string];
     }
@@ -89,7 +98,7 @@ module.exports = class Workbook {
   }
 
   _generateSharedStringsXML() {
-    return sharedStringsGenerator(this.sharedStrings);
+    return sharedStringsGenerator(this.sharedStrings, this.sharedStringsCount);
   }
 
   _generateSheetsXML() {
@@ -117,7 +126,11 @@ module.exports = class Workbook {
 
     archive.append(this._generateSharedStringsXML(), { name: "/xl/sharedStrings.xml", });
 
-    archive.file(path.resolve(__dirname, 'assets', '.rels'), { name: "_rels/.rels" });
+    archive.file(path.resolve(__dirname, 'assets', '.rels'),      { name: "_rels/.rels" });
+    archive.file(path.resolve(__dirname, 'assets', 'styles.xml'), { name: "xl/styles.xml" });
+    archive.file(path.resolve(__dirname, 'assets', 'theme1.xml'), { name: "xl/theme/theme1.xml" });
+    archive.file(path.resolve(__dirname, 'assets', 'app.xml'),    { name: "docProps/app.xml" });
+    archive.file(path.resolve(__dirname, 'assets', 'core.xml'),   { name: "docProps/core.xml" });
 
     archive.finalize();
 

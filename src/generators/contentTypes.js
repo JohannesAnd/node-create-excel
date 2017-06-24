@@ -6,7 +6,7 @@ module.exports = (parts) => {
     return {
       tag: "Override",
       props: {
-        PartName: "/xl/" + part.partName,
+        PartName: part.partName,
         ContentType: part.type
       }
     };

@@ -8,8 +8,7 @@ const CellXf = require('./CellXf');
 module.exports = class StyleSheet {
   constructor() {
     this.fonts = [
-      new Font(11, "Calibri", 2, "minor"),
-      new Font(11, "Calibri", 2, "minor", {bold: true}),
+      new Font({})
     ];
     this.fills = [
       new Fill("none"),
@@ -19,9 +18,29 @@ module.exports = class StyleSheet {
       new Border()
     ];
     this.cellXfs = [
-      new CellXf(0, 0, 0, 0, 0),
-      new CellXf(0, 1, 0, 0, 0)
+      new CellXf(0, 0, 0, 0)
     ];
+  }
+
+  addStyle(opts) {
+    let numberFormat = 0;
+    let font = 0;
+    let fill = 0;
+    let border = 0;
+
+    if (opts.bold || opts.textColor || opts.fontSize) {
+      font = this._addFont(opts);
+    }
+
+    return this._addCellXf(numberFormat, font, fill, border);
+  }
+
+  _addFont(opts) {
+    return this.fonts.push(new Font(opts)) - 1;
+  }
+
+  _addCellXf(...args) {
+    return this.cellXfs.push(new CellXf(...args)) - 1;
   }
 
   getDataStructure() {

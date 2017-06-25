@@ -1,10 +1,9 @@
 module.exports = class CellXf {
-  constructor(numberFormatId, fontId, fillId, borderId, xfId) {
+  constructor(numberFormatId, fontId, fillId, borderId) {
     this.numberFormatId = numberFormatId || 0;
     this.fontId = fontId || 0;
     this.fillId = fillId || 0;
     this.borderId = borderId || 0;
-    this.xfId = xfId || 0;
   }
 
   getDataStructure() {

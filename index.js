@@ -4,10 +4,21 @@ const excel = new Workbook();
 
 const sheet1 = excel.createNewWorksheet("ark1");
 
+const bold = excel.addStyle({
+  bold: true,
+  fontColor: "FFFF00FF",
+  fontSize: 20
+});
+
+const makeBold = (data, row, col, opts) => {
+  opts.style = bold;
+  return data;
+}
+
 const headers = [
-  {data: "Name", headerType: "string", dataType: "string"},
-  {data: "Age", headerType: "string", dataType: "number"},
-  {data: "Gender", headerType: "string", dataType: "string"},
+  {data: "Name", headerType: "string", dataType: "string", headerPreInsertion: makeBold},
+  {data: "Age", headerType: "string", dataType: "number", headerPreInsertion: makeBold},
+  {data: "Gender", headerType: "string", dataType: "string", headerPreInsertion: makeBold},
 ];
 
 const data = [

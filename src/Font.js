@@ -1,10 +1,11 @@
 module.exports = class Font {
-  constructor(size, name, family, scheme, opts) {
-    this.size = size;
-    this.name = name;
-    this.family = family;
-    this.scheme = scheme;
-    this.opts = opts || {};
+  constructor({fontSize, fontName, fontFamily, fontScheme, bold, fontColor}) {
+    this.fontSize = fontSize || 11;
+    this.fontName = fontName || "Calibri";
+    this.fontFamily = fontFamily || 2;
+    this.fontScheme = fontScheme || "minor";
+    this.bold = bold || false;
+    this.fontColor = fontColor || false;
   }
 
   getDataStructure() {
@@ -14,33 +15,42 @@ module.exports = class Font {
         {
           tag: "sz",
           props: {
-            val: this.size
+            val: this.fontSize
           }
         },
         {
           tag: "name",
           props: {
-            val: this.name
+            val: this.fontName
           }
         },
         {
           tag: "family",
           props: {
-            val: this.family
+            val: this.fontFamily
           }
         },
         {
           tag: "scheme",
           props: {
-            val: this.scheme
+            val: this.fontScheme
           }
         }
       ]
     };
 
-    if (this.opts.bold) {
+    if (this.bold) {
       data.children.push({
         tag: "b"
+      });
+    }
+
+    if (this.fontColor) {
+      data.children.push({
+        tag: "color",
+        props: {
+          rgb: this.fontColor
+        }
       });
     }
 

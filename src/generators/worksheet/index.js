@@ -9,30 +9,36 @@ module.exports = (worksheet, addSharedString) => {
 
     const column = Object.keys(row).sort((a,b) => a - b).map(columnKey => {
       const value = row[columnKey];
-      switch (value.type) {
+      const opts = {style: 0, type: value.type};
+      let data = value.data;
+
+      if (value.preInsertion) {
+        data = value.preInsertion(data, rowKey, columnKey, opts);
+      }
+      switch (opts.type) {
         case 'number':
           return {
             tag: "c",
             props: {
               r: value.cell,
-              s: "1",
+              s: opts.style,
               t: "n"
             },
             children: [
               {
                 tag: "v",
-                content: JSON.stringify(value.data)
+                content: JSON.stringify(data)
               }
             ]
           };
           break;
         case 'string':
-          const stringIndex = addSharedString(value.data)
+          const stringIndex = addSharedString(data)
           return {
             tag: "c",
             props: {
               r: value.cell,
-              s: "0",
+              s: opts.style,
               t: "s"
             },
             children: [
@@ -50,7 +56,8 @@ module.exports = (worksheet, addSharedString) => {
       tag: "row",
       props: {
         r: rowKey,
-        "x14ac:dyDescent": "0.25"
+        "x14ac:dyDescent": "0.25",
+        autoFitHeight: "1"
       },
       children: column
     }

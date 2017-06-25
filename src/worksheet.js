@@ -18,19 +18,19 @@ module.exports = class Worksheet {
     this.relationshipId = id;
   }
 
-  insertIntoCell(cell, data, type) {
+  insertIntoCell(cell, data, type, preInsertion) {
     const { col, row } = cellToColRow(cell);
 
     if (row in this.data) {
       if (col in this.data[row]) {
         console.warn(`Overwriting data in cell ${cell} in sheet "${this.name}"`);
-        this.data[row][col] = {cell, data, type};
+        this.data[row][col] = {cell, data, type, preInsertion};
       } else {
-        this.data[row][col] = {cell, data, type};
+        this.data[row][col] = {cell, data, type, preInsertion};
       }
     } else {
       this.data[row] = {};
-      this.data[row][col] = {cell, data, type};
+      this.data[row][col] = {cell, data, type, preInsertion};
     }
   }
 
@@ -38,11 +38,21 @@ module.exports = class Worksheet {
     const { col:startCol, row:startRow } = cellToColRow(startCell);
 
     for (let col = 0; col < headers.length; col++) {
-      this.insertIntoCell(colRowToCell(col + startCol, startRow), headers[col].data, headers[col].headerType);
+      this.insertIntoCell(
+        colRowToCell(col + startCol, startRow),
+        headers[col].data,
+        headers[col].headerType,
+        headers[col].headerPreInsertion
+      );
     }
     for (let row = 0; row < data.length; row++) {
       for (let col = 0; col< headers.length; col++) {
-        this.insertIntoCell(colRowToCell(col + startCol, row + startRow + 1), data[row][col], headers[col].dataType);
+        this.insertIntoCell(
+          colRowToCell(col + startCol, row + startRow + 1),
+          data[row][col],
+          headers[col].dataType,
+          headers[col].dataPreInsertion
+        );
       }
     }
   }

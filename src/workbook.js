@@ -66,7 +66,7 @@ module.exports = class Workbook {
   }
 
   addStyle(style) {
-    this.styles.push(style);
+    return this.styleSheet.addStyle(style);
   }
 
   addTheme(theme) {

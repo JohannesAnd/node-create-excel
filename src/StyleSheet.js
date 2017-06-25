@@ -8,7 +8,8 @@ const CellXf = require('./CellXf');
 module.exports = class StyleSheet {
   constructor() {
     this.fonts = [
-      new Font(11, "Calibri", 2, "minor")
+      new Font(11, "Calibri", 2, "minor"),
+      new Font(11, "Calibri", 2, "minor", {bold: true}),
     ];
     this.fills = [
       new Fill("none"),
@@ -18,7 +19,8 @@ module.exports = class StyleSheet {
       new Border()
     ];
     this.cellXfs = [
-      new CellXf(0, 0, 0, 0, 0)
+      new CellXf(0, 0, 0, 0, 0),
+      new CellXf(0, 1, 0, 0, 0)
     ];
   }
 
@@ -26,15 +28,18 @@ module.exports = class StyleSheet {
     return {
       tag: "styleSheet",
       props: {
-        "xmlns:x": links.sheet.main
+        "xmlns": links.sheet.main,
+        "xmlns:mc": links.sheet.mc,
+        "mc:Ignorable": "x14ac x16r2",
+        "xmlns:x14ac": links.sheet.ac,
+        "xmlns:x16r2": links.sheet.main15
       },
       children: [
         {
           tag: "fonts",
           props: {
             count: this.fonts.length,
-            "x14ac:knownFonts": "1",
-            "xmlns:x14ac": links.sheet.ac
+            "x14ac:knownFonts": "1"
           },
           children: this.fonts.map(f => f.getDataStructure())
         },

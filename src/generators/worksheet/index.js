@@ -15,7 +15,7 @@ module.exports = (worksheet, addSharedString) => {
             tag: "c",
             props: {
               r: value.cell,
-              s: "0",
+              s: "1",
               t: "n"
             },
             children: [

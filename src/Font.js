@@ -1,13 +1,14 @@
 module.exports = class Font {
-  constructor(size, name, family, scheme) {
+  constructor(size, name, family, scheme, opts) {
     this.size = size;
     this.name = name;
     this.family = family;
     this.scheme = scheme;
+    this.opts = opts || {};
   }
 
   getDataStructure() {
-    return {
+    const data = {
       tag: "font",
       children: [
         {
@@ -36,5 +37,13 @@ module.exports = class Font {
         }
       ]
     };
+
+    if (this.opts.bold) {
+      data.children.push({
+        tag: "b"
+      });
+    }
+
+    return data;
   }
 }

@@ -10,6 +10,7 @@ module.exports = {
   sheet: {
     relationships:  "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
     main:           "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+    main15:         "http://schemas.microsoft.com/office/spreadsheetml/2015/02/main",
     mc:             "http://schemas.openxmlformats.org/markup-compatibility/2006",
     ac:             "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac"
   },

@@ -15,7 +15,8 @@ module.exports = class CellXf {
         fontId: this.fontId,
         fillId: this.fillId,
         borderId: this.borderId,
-        xfId: this.xfId
+        applyNumberFormat: this.numberFormatId !== 0 ? "1" : "0",
+        applyFont: this.fontId !== 0 ? "1" : "0"
       }
     };
   }

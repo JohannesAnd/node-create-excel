@@ -9,8 +9,10 @@ const contentTypesGenerator = require("./generators/contentTypes");
 const relationshipsGenerator = require("./generators/workbookRels");
 const worksheetGenerator = require("./generators/worksheet");
 const workbookGenerator = require("./generators/workbook");
+const styleSheetGenerator = require("./generators/styleSheet");
 
 const Relationship = require('./relationship');
+const StyleSheet = require('./StyleSheet');
 const Part = require('./part');
 
 module.exports = class Workbook {
@@ -18,16 +20,15 @@ module.exports = class Workbook {
     this.worksheets = [];
     this.styles = [];
     this.themes = [];
+    this.styleSheet = new StyleSheet();
     this.relationships = [
       new Relationship("rId1", "sharedStrings", "sharedStrings.xml"),
       new Relationship("rId2", "styles", "styles.xml"),
-      new Relationship("rId3", "theme", "theme/theme1.xml"),
     ];
     this.partList = [
       new Part("xml", "/xl/workbook.xml"),
       new Part("strings", "/xl/sharedStrings.xml"),
       new Part("styles", "/xl/styles.xml"),
-      new Part("theme", "/xl/theme/theme1.xml"),
       new Part("app", "/docProps/app.xml"),
       new Part("core", "/docProps/core.xml"),
     ];
@@ -101,6 +102,10 @@ module.exports = class Workbook {
     return sharedStringsGenerator(this.sharedStrings, this.sharedStringsCount);
   }
 
+  _generateStyleSheetXML() {
+    return styleSheetGenerator(this.styleSheet);
+  }
+
   _generateSheetsXML() {
     return this.worksheets.map(sheet => {
       return {
@@ -121,14 +126,13 @@ module.exports = class Workbook {
     archive.append(this._generateContentTypesXML(),  { name: "[Content_Types].xml" });
     archive.append(this._generateRelationshipsXML(), { name: "/xl/_rels/workbook.xml.rels" });
     archive.append(this._generateWorkbookXML(),      { name: "/xl/workbook.xml", });
+    archive.append(this._generateStyleSheetXML(),    { name: "/xl/styles.xml", });
 
     this._generateSheetsXML().forEach(({path, xml}) => archive.append(xml, { name: "/xl/" + path }));
 
     archive.append(this._generateSharedStringsXML(), { name: "/xl/sharedStrings.xml", });
 
     archive.file(path.resolve(__dirname, 'assets', '.rels'),      { name: "_rels/.rels" });
-    archive.file(path.resolve(__dirname, 'assets', 'styles.xml'), { name: "xl/styles.xml" });
-    archive.file(path.resolve(__dirname, 'assets', 'theme1.xml'), { name: "xl/theme/theme1.xml" });
     archive.file(path.resolve(__dirname, 'assets', 'app.xml'),    { name: "docProps/app.xml" });
     archive.file(path.resolve(__dirname, 'assets', 'core.xml'),   { name: "docProps/core.xml" });
 

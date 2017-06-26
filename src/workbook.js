@@ -65,7 +65,7 @@ module.exports = class Workbook {
     return worksheets.map(worksheet => this.addWorksheet(worksheet));
   }
 
-  addStyle(style) {
+  addStyle(style = {}) {
     return this.styleSheet.addStyle(style);
   }
 

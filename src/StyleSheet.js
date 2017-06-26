@@ -11,8 +11,8 @@ module.exports = class StyleSheet {
       new Font({})
     ];
     this.fills = [
-      new Fill("none"),
-      new Fill("gray125")
+      new Fill({patternType: "none"}),
+      new Fill({patternType: "gray125"})
     ];
     this.borders = [
       new Border()
@@ -28,15 +28,27 @@ module.exports = class StyleSheet {
     let fill = 0;
     let border = 0;
 
-    if (opts.bold || opts.textColor || opts.fontSize) {
+    if (opts.bold || opts.fontColor || opts.fontSize) {
       font = this._addFont(opts);
     }
 
-    return this._addCellXf(numberFormat, font, fill, border);
+    if (opts.fillColor) {
+      fill = this._addFill(opts);
+    }
+
+    const styleIndex = this._addCellXf(numberFormat, font, fill, border);
+    const rowHeight = opts.rowHeight || opts.fontSize * 1.4 || 14;
+
+    return {rowHeight, styleIndex};
   }
 
   _addFont(opts) {
     return this.fonts.push(new Font(opts)) - 1;
+  }
+
+
+  _addFill(opts) {
+    return this.fills.push(new Fill(opts)) - 1;
   }
 
   _addCellXf(...args) {

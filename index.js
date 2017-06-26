@@ -4,10 +4,14 @@ const excel = new Workbook();
 
 const sheet1 = excel.createNewWorksheet("ark1");
 
+const normal = excel.addStyle();
+const gray = excel.addStyle({ fillColor: "FFEEEEEE" });
 const bold = excel.addStyle({
   bold: true,
   fontColor: "FFFF00FF",
-  fontSize: 20
+  fontSize: 22,
+  fillColor: "FFAAAAAA",
+  rowHeight: 50
 });
 
 const makeBold = (data, row, col, opts) => {
@@ -15,10 +19,15 @@ const makeBold = (data, row, col, opts) => {
   return data;
 }
 
+const striped = (data, row, col, opts) => {
+  opts.style = (row % 2) ? normal : gray;
+  return data;
+}
+
 const headers = [
-  {data: "Name", headerType: "string", dataType: "string", headerPreInsertion: makeBold},
-  {data: "Age", headerType: "string", dataType: "number", headerPreInsertion: makeBold},
-  {data: "Gender", headerType: "string", dataType: "string", headerPreInsertion: makeBold},
+  {data: "Name", headerType: "string", dataType: "string", headerStyle: bold, dataPreInsertion: striped},
+  {data: "Age", headerType: "string", dataType: "number", headerStyle: bold, dataPreInsertion: striped},
+  {data: "Gender", headerType: "string", dataType: "string", headerStyle: bold, dataPreInsertion: striped},
 ];
 
 const data = [

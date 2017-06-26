@@ -6,22 +6,25 @@ module.exports = (worksheet, addSharedString) => {
 
   const sheetData = Object.keys(cellData).sort((a,b) => a - b).map(rowKey => {
     const row = cellData[rowKey];
-
+    let highestCol = 0;
     const column = Object.keys(row).sort((a,b) => a - b).map(columnKey => {
       const value = row[columnKey];
-      const opts = {style: 0, type: value.type};
+      const opts = {style: {styleIndex: 0, rowHeight: 14}, type: value.type};
       let data = value.data;
 
       if (value.preInsertion) {
         data = value.preInsertion(data, rowKey, columnKey, opts);
       }
+
+      if (opts.style.rowHeight > highestCol) highestCol = opts.style.rowHeight;
+
       switch (opts.type) {
         case 'number':
           return {
             tag: "c",
             props: {
               r: value.cell,
-              s: opts.style,
+              s: opts.style.styleIndex,
               t: "n"
             },
             children: [
@@ -38,7 +41,7 @@ module.exports = (worksheet, addSharedString) => {
             tag: "c",
             props: {
               r: value.cell,
-              s: opts.style,
+              s: opts.style.styleIndex,
               t: "s"
             },
             children: [
@@ -57,7 +60,7 @@ module.exports = (worksheet, addSharedString) => {
       props: {
         r: rowKey,
         "x14ac:dyDescent": "0.25",
-        autoFitHeight: "1"
+        ht: highestCol
       },
       children: column
     }

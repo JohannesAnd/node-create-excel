@@ -1,4 +1,5 @@
 const links = require('./../utils/links');
+const extend = require('./../utils').extend;
 
 const Font = require('./Font');
 const Fill = require('./Fill');
@@ -6,7 +7,8 @@ const Border = require('./Border');
 const CellXf = require('./CellXf');
 
 module.exports = class StyleSheet {
-  constructor() {
+  constructor(baseStyles) {
+    this.baseStyles = baseStyles;
     this.fonts = [
       new Font({})
     ];
@@ -23,21 +25,22 @@ module.exports = class StyleSheet {
   }
 
   addStyle(opts) {
+    const style = extend(this.baseStyles, opts);
     let numberFormat = 0;
     let font = 0;
     let fill = 0;
     let border = 0;
 
-    if (opts.bold || opts.fontColor || opts.fontSize) {
-      font = this._addFont(opts);
+    if (style.bold || style.fontColor || style.fontSize) {
+      font = this._addFont(style);
     }
 
-    if (opts.fillColor) {
-      fill = this._addFill(opts);
+    if (style.fillColor) {
+      fill = this._addFill(style);
     }
 
     const styleIndex = this._addCellXf(numberFormat, font, fill, border);
-    const rowHeight = opts.rowHeight || opts.fontSize * 1.4 || 14;
+    const rowHeight = style.rowHeight || style.fontSize * 1.4 || 14;
 
     return {rowHeight, styleIndex};
   }

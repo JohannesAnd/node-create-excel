@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 
-const Worksheet = require('./worksheet');
+const Worksheet = require('./Worksheet');
 
 const sharedStringsGenerator = require("./generators/sharedStrings");
 const contentTypesGenerator = require("./generators/contentTypes");
@@ -11,16 +11,16 @@ const worksheetGenerator = require("./generators/worksheet");
 const workbookGenerator = require("./generators/workbook");
 const styleSheetGenerator = require("./generators/styleSheet");
 
-const Relationship = require('./relationship');
+const Relationship = require('./Relationship');
 const StyleSheet = require('./StyleSheet');
-const Part = require('./part');
+const Part = require('./Part');
 
 module.exports = class Workbook {
-  constructor(){
+  constructor({style = {}, sheets = []} = {}){
     this.worksheets = [];
     this.styles = [];
     this.themes = [];
-    this.styleSheet = new StyleSheet();
+    this.styleSheet = new StyleSheet(style);
     this.relationships = [
       new Relationship("rId1", "sharedStrings", "sharedStrings.xml"),
       new Relationship("rId2", "styles", "styles.xml"),
@@ -34,6 +34,17 @@ module.exports = class Workbook {
     ];
     this.sharedStrings = {};
     this.sharedStringsCount = 0;
+
+    sheets.forEach(name => this._createNewWorksheet(name));
+  }
+
+  update(updates) {
+    updates.forEach(update => this._updateSingle(update));
+  }
+
+  _updateSingle(opts) {
+    opts.styleSheet = this.styleSheet;
+    this.worksheets[opts.sheet].update(opts);
   }
 
   _generateRelationship(type, path) {
@@ -45,15 +56,11 @@ module.exports = class Workbook {
     return id;
   }
 
-  createNewWorksheet(name) {
-    const worksheet = new Worksheet(name);
-
+  _createNewWorksheet(name) {
     const path = `worksheets/sheet${this.worksheets.length + 1}.xml`;
     const rel = this._generateRelationship('worksheet', path);
 
-    worksheet.setPath(path);
-    worksheet.setWorksheetId(this.worksheets.length + 1);
-    worksheet.setRelationshipId(rel);
+    const worksheet = new Worksheet(this.worksheets.length + 1, name, path, rel);
 
     this.worksheets.push(worksheet);
     this.partList.push(new Part('worksheet', "/xl/" + path));
@@ -61,19 +68,7 @@ module.exports = class Workbook {
     return worksheet;
   }
 
-  addWorksheets(worksheets) {
-    return worksheets.map(worksheet => this.addWorksheet(worksheet));
-  }
-
-  addStyle(style = {}) {
-    return this.styleSheet.addStyle(style);
-  }
-
-  addTheme(theme) {
-    this.themes.push(theme);
-  }
-
-  addSharedString(string) {
+  _addSharedString(string) {
     this.sharedStringsCount ++;
 
     if (string in this.sharedStrings) {
@@ -110,7 +105,7 @@ module.exports = class Workbook {
     return this.worksheets.map(sheet => {
       return {
         path: sheet.path,
-        xml: worksheetGenerator(sheet, this.addSharedString.bind(this))
+        xml: worksheetGenerator(sheet, this._addSharedString.bind(this))
       };
     });
   }
@@ -140,5 +135,4 @@ module.exports = class Workbook {
 
     return output;
   }
-
 }

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:unit": "mocha \"tests/unit/**/*.js\"",
-    "start": "node index.js"
+    "start": "node test.js"
   },
   "author": "",
   "license": "ISC",

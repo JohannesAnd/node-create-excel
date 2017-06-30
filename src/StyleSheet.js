@@ -41,8 +41,9 @@ module.exports = class StyleSheet {
 
     const styleIndex = this._addCellXf(numberFormat, font, fill, border);
     const rowHeight = style.rowHeight || style.fontSize * 1.4 || 14;
+    const colWidth = style.colWidth;
 
-    return {rowHeight, styleIndex};
+    return {rowHeight, styleIndex, colWidth};
   }
 
   _addFont(opts) {

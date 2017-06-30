@@ -1,17 +1,25 @@
+const { generateColumnWidths } = require('./../../../utils');
+
 const template = require('./template');
 
 module.exports = (worksheet, addSharedString) => {
 
   const cellData = worksheet.getData();
 
+  const columnWidths = {};
+
   const sheetData = Object.keys(cellData).sort((a,b) => a - b).map(rowKey => {
     const row = cellData[rowKey];
     let highestCol = 0;
     const column = Object.keys(row).sort((a,b) => a - b).map(columnKey => {
       const {type, cell, data, style} = row[columnKey];
-
       if (style.rowHeight > highestCol) highestCol = style.rowHeight;
-      
+      if ((
+          !columnWidths[columnKey]
+          || style.colWidth > columnWidths[columnKey])
+        && style.colWidth
+      ) columnWidths[columnKey] = style.colWidth;
+
       switch (type) {
         case 'number':
           return {
@@ -60,5 +68,12 @@ module.exports = (worksheet, addSharedString) => {
     }
   });
 
-  return template(sheetData)
+  const columnWidthsData = generateColumnWidths(columnWidths).map(el => {
+    return {
+      tag: "col",
+      props: el
+    };
+  });
+
+  return template(sheetData, columnWidthsData);
 }

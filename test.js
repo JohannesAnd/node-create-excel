@@ -31,7 +31,7 @@ excel.update([
 
 const table = new Table({
   headers: [
-    {name: "Navn", type: "string", style: {bold: true}}
+    {name: "Navn", type: "string", style: {bold: true, colWidth: 20}}
   ],
   columns: [
     {type: "string", style: {}}

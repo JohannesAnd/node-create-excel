@@ -1,7 +1,7 @@
 const links = require('./../../../utils/links');
 const writeXML = require('./../../../utils/writeXML');
 
-module.exports = sheetData => {
+module.exports = (sheetData, colsData) => {
   const data = [
     {
       tag: "worksheet",
@@ -13,21 +13,10 @@ module.exports = sheetData => {
         "xmlns:x14ac": links.sheet.ac
       },
       children: [
-        /*{
-          tag: "dimension",
-          props: {
-            ref: "A1:C4"
-          }
-        },
         {
-          tag: "sheetFormatPr",
-          props: {
-            baseColWidth: "10",
-            defaultColWidth: "9.140625",
-            defaultRowHeight: "15",
-            "x14ac:dyDescent": "0.25"
-          }
-        },*/
+          tag: "cols",
+          children: colsData
+        },
         {
           tag: "sheetData",
           children: sheetData

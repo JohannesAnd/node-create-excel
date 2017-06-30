@@ -6,13 +6,14 @@
 // Require the library
 const Workbook = require("node-create-excel").Workbook;
 const Table = require("node-create-excel").Table;
+const { rgb, extend } = require('node-create-excel');
 
 // Create a new workbook
 const workbook = new Workbook({
   style: {
     fontSize: 22,
-    fontColor: "FFFF0000",
-    cellColor: "FF00FF00"
+    fontColor: rgb("#FF0000"),
+    fillColor: rgb("#0F0")
   },
   sheets: [
     'Sheet name'
@@ -28,24 +29,29 @@ workbook.update([
   style: {}
 ])
 
+// Create base style if necessary
+const commonTableStyle = {
+  fontSize: 21
+};
+
 // Add table
 const table = new Table({
   headers: [{
     name: "Name",
     type: "string",
-    style: {}
+    style: extend(commonTableStyle, {bold: true})
   }],
   rows: [
     {
       type: "string",
       style: {},
-    }, 
+    },
     {
-      type(data, rowIndex, colIndex) {
-        return (rowIndex % 2) ? "string" : "number"
+      type({data, row, col}) {
+        return (row % 2) ? "string" : "number"
       },
-      style(data, rowIndex, colIndex) {
-        return (rowIndex % 2) ? {fontColor: "red"} : {fontColor: "blue"}
+      style({data, row, col}) {
+        return (row % 2) ? {fontColor: "red"} : {fontColor: "blue"}
       }
     }
   ],
@@ -72,8 +78,10 @@ workbook.generate('build/example.xlsx');
 ```js
 {
   fontSize: 22,
-  fontColor: "FFFFFFFF",
+  fontColor: rgb("FFF"),
   bold: true,
-  fillColor: "FFFFFFFF"
+  fillColor: rgb("FFF"),
+  rowHeight: 20,
+  colWidth: 15
 }
 ```

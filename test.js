@@ -34,10 +34,15 @@ const table = new Table({
     {name: "Navn", type: "string", style: {bold: true, colWidth: 20}}
   ],
   columns: [
-    {type: "string", style: {}}
+    {
+      type: "string",
+      style({col, row}) {
+        return (row % 2) ? {fillColor: rgb("#AAA")} : {fillColor: rgb("#FFF")};
+      }
+    }
   ],
   data: [
-    ["Gunnar"], ["Åge"], ["Nils"]
+    ["Gunnar"], ["Åge"], ["Nils"], ["Gunnar"], ["Åge"], ["Nils"]
   ]
 });
 

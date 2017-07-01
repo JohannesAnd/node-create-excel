@@ -1,14 +1,13 @@
 const {
   Workbook,
   Table,
-  rgb
+  rgb,
+  extend,
+  offset
 } = require('./index');
 
 const excel = new Workbook({
-  style: {
-    fontSize: 22,
-    fillColor: "FF00FF00"
-  },
+  style: {},
   sheets: [
     'Sheet name',
     'Sheet 2',
@@ -23,7 +22,6 @@ excel.update([
     data: "hey",
     type: "string",
     style: {
-      fontSize: 20,
       fontColor: rgb("#F00")
     }
   }

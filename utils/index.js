@@ -4,3 +4,4 @@ module.exports.colRowToCell = require('./cellConversions').colRowToCell;
 module.exports.generateColumnWidths = require('./generateColumnWidths');
 module.exports.rgb = require('./rgb');
 module.exports.extend = require('./extend');
+module.exports.offset = require('./offset');

@@ -22,6 +22,7 @@ module.exports = class StyleSheet {
     this.cellXfs = [
       new CellXf(0, 0, 0, 0)
     ];
+    this.styles = {};
   }
 
   addStyle(opts) {
@@ -39,11 +40,28 @@ module.exports = class StyleSheet {
       fill = this._addFill(style);
     }
 
-    const styleIndex = this._addCellXf(numberFormat, font, fill, border);
+    const stringed = this._stringify(style);
+    let styleIndex = 0;
+
+    if (this.styles[stringed]) {
+      styleIndex = this.styles[stringed];
+    } else {
+      styleIndex = this._addCellXf(numberFormat, font, fill, border);
+      this.styles[stringed] = styleIndex;
+    }
+
     const rowHeight = style.rowHeight || style.fontSize * 1.4 || 14;
     const colWidth = style.colWidth;
 
     return {rowHeight, styleIndex, colWidth};
+  }
+
+  _stringify(opts) {
+    let string = '';
+    for (let key in opts) {
+      string += `${key}:${opts[key]};`;
+    }
+    return string;
   }
 
   _addFont(opts) {
